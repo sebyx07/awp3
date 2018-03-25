@@ -13,7 +13,6 @@ module Awp3
     end
 
     def grab_files
-
     end
 
     private
