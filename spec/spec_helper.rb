@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "awp3"
+require_relative '../lib/awp3'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
