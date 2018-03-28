@@ -90,6 +90,7 @@ module Awp3
       arr = grab_files.each_slice(size).to_a
       rev = grab_files.reverse
       last_file = arr[split_interval_in_parts.size - 1].last
+
       i = 0
       last_arr = []
       while rev[i] != last_file
