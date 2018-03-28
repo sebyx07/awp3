@@ -12,7 +12,6 @@ if ARGV[3] == 'test'
   return p grabs
 end
 
-
 grabs.each do |grab|
   Awp3::Commit.new(grab[:files], grab[:time]).commit!
 end
