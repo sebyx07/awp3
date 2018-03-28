@@ -8,7 +8,6 @@ Gem::Specification.new do |spec|
   spec.version       = Awp3::VERSION
   spec.authors       = ["sebi"]
   spec.email         = ["gore.sebyx@yahoo.com"]
-
   spec.summary       = %q{AWP GEM}
   spec.description   = %q{AWP GEM}
   spec.homepage      = "https://github.com/sebyx07/awp3"

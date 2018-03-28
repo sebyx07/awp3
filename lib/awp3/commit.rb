@@ -19,7 +19,8 @@ module Awp3
 
     def commit!
       _commit = commit
-      p `#{_commit[:git_add]}`
+      p _commit[:git_add]
+      `#{_commit[:git_add]}
       p `#{_commit[:git_commit]}`
     end
 
