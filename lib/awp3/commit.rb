@@ -32,6 +32,7 @@ module Awp3
     def files_names_for_commit
       file = files.first
       File.basename(file, File.extname(file))
+
     end
   end
 end
