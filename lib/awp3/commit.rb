@@ -3,6 +3,7 @@ module Awp3
     MESSAGES_LIST = ['work on', 'change', 'modify this', 'update', 'change to']
     attr_reader :files, :date, :message
 
+
     def initialize(files, date)
       @files = files
       @date = date
