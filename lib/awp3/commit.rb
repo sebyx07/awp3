@@ -1,6 +1,6 @@
 module Awp3
   class Commit
-    MESSAGES_LIST = ['work on', 'change', 'modify this', 'update', 'change to']
+    MESSAGES_LIST = ['work on', 'change', 'modify', 'update', 'change to', 'fix', 'repair', 'refactor']
     attr_reader :files, :date, :message
 
 
@@ -32,8 +32,6 @@ module Awp3
     def files_names_for_commit
       file = files.first
       File.basename(file, File.extname(file))
-
-
     end
   end
 end
