@@ -1,3 +1,18 @@
 #!/usr/bin/env ruby
 
 require "awp3"
+
+if ARGV[0] == 'max'
+ return p Awp3::Grabber.new('Time.now', 'Time.now', 'max').grab_files.size
+end
+
+grabs = Awp3::Grabber::new(ARGV[0], ARGV[1], ARGV[2]).grab
+
+if ARGV[3] == 'test'
+  return p grabs
+end
+
+
+grabs.each do |grab|
+  Awp3::Commit.new(grab[:files], grab[:time]).commit!
+end
