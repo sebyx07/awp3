@@ -30,7 +30,8 @@ module Awp3
     end
 
     def files_names_for_commit
-      files.map {|f| File.basename(f, File.extname(f))}.join(' ')
+      file = files.first
+      File.basename(file, File.extname(file))
     end
   end
 end
