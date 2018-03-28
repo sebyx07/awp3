@@ -9,7 +9,11 @@ end
 grabs = Awp3::Grabber::new(ARGV[0], ARGV[1], ARGV[2]).grab
 
 if ARGV[3] == 'test'
-  return p grabs
+  p grabs
+  print "\n\n----END GRABS---\n\n"
+  return grabs.each do |grab|
+    Awp3::Commit.new(grab[:files], grab[:time]).commit!
+  end
 end
 
 grabs.each do |grab|
