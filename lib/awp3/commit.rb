@@ -24,6 +24,12 @@ module Awp3
       p `#{_commit[:git_commit]}`
     end
 
+    def add_new!
+      p add = 'git add .'
+      `#{add}`
+      p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m 'update'`
+    end
+
     private
 
     def generate_commit_message

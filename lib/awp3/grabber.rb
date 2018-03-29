@@ -14,7 +14,10 @@ module Awp3
     end
 
     def grab_files
-      @grab_files ||= `git diff --name-only`.split("\n")
+      return @grab_files if @grab_files
+
+      @grab_files = `git diff --name-only`.split("\n")
+      @grab_files += `git ls-files --others --exclude-standard`.split("\n")
     end
 
     def grab
