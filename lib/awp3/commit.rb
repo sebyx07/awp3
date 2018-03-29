@@ -16,6 +16,7 @@ module Awp3
         git_commit: generate_commit_message
       }
     end
+
     def commit!
       _commit = commit
       p _commit[:git_add]
