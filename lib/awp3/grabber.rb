@@ -104,4 +104,5 @@ module Awp3
       arr[0..split_interval_in_parts.size]
     end
   end
+
 end
