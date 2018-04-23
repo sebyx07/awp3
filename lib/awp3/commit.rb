@@ -1,6 +1,6 @@
 module Awp3
   class Commit
-    MESSAGES_LIST = ['work on', 'change', 'modify', 'update', 'change to', 'fix', 'repair', 'refactor']
+    MESSAGES_LIST = %w(change update)
     attr_reader :files, :date, :message
 
 
