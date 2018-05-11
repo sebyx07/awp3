@@ -1,19 +1,24 @@
 module Awp3
   class Commit
-    MESSAGES_LIST = %w(change update)
+    MESSAGES_LIST = %w(change update fix improve)
     attr_reader :files, :date, :message
 
 
     def initialize(files, date)
       @files = files
       @date = date
-      @message = MESSAGES_LIST.shuffle.first.concat(" #{files_names_for_commit}")
+      @message = MESSAGES_LIST
+                     .shuffle
+                     .first
+                     .concat(" #{files_names_for_commit}").split(' ')[0..1]
+                     .join(' ')
+                     .gsub(/\-|_/, " ")
     end
 
     def commit
       {
-        git_add: "git add #{files.join(' ')}",
-        git_commit: generate_commit_message
+          git_add: "git add #{files.join(' ')}",
+          git_commit: generate_commit_message
       }
     end
 
@@ -38,7 +43,8 @@ module Awp3
 
     def files_names_for_commit
       file = files.first
-      File.basename(file, File.extname(file)).gsub(/\-|_/, " ").split.first.split(" ").first
+      File.basename(file, File.extname(file))
     end
   end
 end
+
