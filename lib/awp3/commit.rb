@@ -4,7 +4,7 @@ module Awp3
     attr_reader :files, :date, :message, :commit_message
 
 
-    def initialize(files, date, commit_message)
+    def initialize(files, date, commit_message="")
       @files = files
       @date = date
       @message = MESSAGES_LIST
@@ -13,6 +13,7 @@ module Awp3
                      .concat(" #{files_names_for_commit}").split(' ')[0..1]
                      .join(' ')
                      .gsub(/\-|_/, " ")
+      @commit_message = commit_message
     end
 
     def commit
