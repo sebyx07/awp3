@@ -22,12 +22,12 @@ if ARGV[3] == 'test'
   p grabs
   print "\n\n----END GRABS---\n\n"
   grabs.each do |grab|
-    p Awp3::Commit.new(grab[:files], grab[:time]).commit
+    p Awp3::Commit.new(grab[:files], grab[:time], nil).commit
   end
 
   return p 'This was a test nothing was committed!'
 end
 
 grabs.each do |grab|
-  Awp3::Commit.new(grab[:files], grab[:time]).commit!
+  Awp3::Commit.new(grab[:files], grab[:time], ARGV[3]).commit!
 end

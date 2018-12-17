@@ -1,10 +1,10 @@
 module Awp3
   class Commit
     MESSAGES_LIST = %w(change update fix improve)
-    attr_reader :files, :date, :message
+    attr_reader :files, :date, :message, :commit_message
 
 
-    def initialize(files, date)
+    def initialize(files, date, commit_message)
       @files = files
       @date = date
       @message = MESSAGES_LIST
@@ -38,7 +38,7 @@ module Awp3
     private
 
     def generate_commit_message
-      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}'"
+      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message} #{commit_message}'"
     end
 
     def files_names_for_commit
