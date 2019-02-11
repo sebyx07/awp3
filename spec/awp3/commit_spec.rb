@@ -12,6 +12,6 @@ RSpec.describe Awp3::Commit do
   end
 
   it 'git_commit' do
-    expect(@commit[:git_commit]).to eq("GIT_AUTHOR_DATE='#{@date}' GIT_COMMITTER_DATE='#{@date}' git commit -m '#{@commit_obj.message}'")
+    expect(@commit[:git_commit]).to eq("GIT_AUTHOR_DATE='#{@date}' GIT_COMMITTER_DATE='#{@date}' git commit -m '#{@commit_obj.message} '")
   end
 end

@@ -41,8 +41,8 @@ RSpec.describe Awp3::Grabber do
       expect(grabs.size).to eq(100)
     end
 
-    (2..100).to_a.reverse.each do |count|
-      it count do
+    it "count" do
+      (2..100).to_a.reverse.each do |count|
         @grabber = Awp3::Grabber.new(@start, @end, count)
         allow(@grabber).to receive(:grab_files).and_return(@files)
         grabs = @grabber.grab

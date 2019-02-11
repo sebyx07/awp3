@@ -1,19 +1,14 @@
 module Awp3
   class Commit
-    MESSAGES_LIST = %w(change update fix improve)
+    MESSAGES_LIST = %w(fix change update)
     attr_reader :files, :date, :message, :commit_message
 
 
     def initialize(files, date, commit_message="")
       @files = files
       @date = date
-      @message = MESSAGES_LIST
-                     .shuffle
-                     .first
-                     .concat(" #{files_names_for_commit}").split(' ')[0..1]
-                     .join(' ')
-                     .gsub(/\-|_/, " ")
-      @commit_message = commit_message
+      @message = build_message
+      @commit_message = commit_message.present? ? " #{commit_message}" : nil
     end
 
     def commit
@@ -21,6 +16,23 @@ module Awp3
           git_add: "git add #{files.join(' ')}",
           git_commit: generate_commit_message
       }
+    end
+
+    def build_message
+      message = MESSAGES_LIST.sample
+
+      full_message_chance = rand(1..10)
+      if full_message_chance < 3
+        return message
+      end
+
+      add_file_name_to_message(message)
+    end
+
+    def add_file_name_to_message(message)
+      number_of_names_from_file = rand(2..5)
+      file_name = files_names_for_commit.split(/_|-/).first(number_of_names_from_file).join(" ")
+      message + " #{file_name}"
     end
 
     def commit!
@@ -39,7 +51,7 @@ module Awp3
     private
 
     def generate_commit_message
-      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message} #{commit_message}'"
+      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}#{commit_message}'"
     end
 
     def files_names_for_commit
