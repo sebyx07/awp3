@@ -1,6 +1,14 @@
 #!/usr/bin/env ruby
 
 require "awp3"
+include Awp3::Command
+
+if ARGV[0] == "now"
+  message = Awp3::Commit::MESSAGES_LIST.sample
+  exec_s 'git add .'
+  exec_s "git commit -m '#{message}'"
+  return exec_s 'git push origin HEAD'
+end
 
 if ARGV[0] == 'max'
  return p Awp3::Grabber.new('Time.now', 'Time.now', 'max').grab_files.size
