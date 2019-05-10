@@ -23,7 +23,7 @@ if ARGV[0] == 'commit'
 end
 
 if ARGV[0] == 'rubocop'
-  return exec_s("rubocop #{Awp3::Grabber.changed_files.join(' ')} --auto-correct")
+  return exec_s("rubocop #{Awp3::Grabber.changed_files.join(' ')} --auto-correct", show_output: true)
 end
 
 grabs = Awp3::Grabber.new(ARGV[0], ARGV[1], ARGV[2]).grab
