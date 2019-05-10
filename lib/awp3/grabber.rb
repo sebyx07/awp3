@@ -2,22 +2,28 @@ module Awp3
   class Grabber
     attr_accessor :start_interval, :end_interval, :max_commits
 
+    class << self
+      def changed_files
+        files = `git diff --name-only`.split("\n")
+        files + `git ls-files --others --exclude-standard`.split("\n")
+      end
+    end
+
     def initialize(start_interval, end_interval, max_commits)
       @start_interval = eval(start_interval).to_datetime
       @end_interval = eval(end_interval).to_datetime
-      if max_commits == 'max'
-        @max_commits = 'max'
-      else
-        @max_commits = max_commits.to_i
-      end
+      @max_commits = if max_commits == 'max'
+                       'max'
+                     else
+                       max_commits.to_i
+                     end
       _validate
     end
 
     def grab_files
       return @grab_files if @grab_files
 
-      @grab_files = `git diff --name-only`.split("\n")
-      @grab_files += `git ls-files --others --exclude-standard`.split("\n")
+      @grab_files = self.class.changed_files
     end
 
     def grab
@@ -26,7 +32,7 @@ module Awp3
       index = 0
       file_partitions = _file_partitions
       interval.each do |_interval|
-        grabs.push({files: file_partitions[index], time: _interval})
+        grabs.push(files: file_partitions[index], time: _interval)
         index += 1
       end
       grabs
@@ -34,11 +40,10 @@ module Awp3
 
     def split_interval_in_parts
       return @interval if @interval
+
       diff = ((end_interval - start_interval) * 24 * 60 * 60).to_i
       split_into = grab_files.size
-      if max_commits.is_a? Integer
-        split_into = max_commits
-      end
+      split_into = max_commits if max_commits.is_a? Integer
 
       split_diff = diff / split_into
 
@@ -54,42 +59,33 @@ module Awp3
     end
 
     private
+
     def _validate
-      [:start_interval, :end_interval].each do |m|
-        unless send(m).is_a? DateTime
-          raise "#{m} is not valid time"
-        end
+      %i[start_interval end_interval].each do |m|
+        raise "#{m} is not valid time" unless send(m).is_a? DateTime
       end
 
-      if start_interval > end_interval
-        raise 'Start is > than end'
-      end
+      raise 'Start is > than end' if start_interval > end_interval
     end
 
     def _remove_middle_time(arr)
-      if arr.size > 2
-        arr.delete_at(arr.size / 2)
-      end
+      arr.delete_at(arr.size / 2) if arr.size > 2
       arr
     end
 
     def _random_time(arr, split_diff)
       split_diff *= 0.5
       arr.each_with_index do |_el, i|
-        if i == arr.size - 1
-          next
-        end
+        next if i == arr.size - 1
 
-        time = rand((split_diff * - 1).. split_diff)
+        time = rand((split_diff * - 1)..split_diff)
         arr[i] = arr[i] + time.seconds
       end
     end
 
     def _file_partitions
       size = (grab_files.size / split_interval_in_parts.size)
-      if size <= 0
-        size = 1
-      end
+      size = 1 if size <= 0
       arr = grab_files.each_slice(size).to_a
       rev = grab_files.reverse
       last_file = arr[split_interval_in_parts.size - 1].last
@@ -104,5 +100,4 @@ module Awp3
       arr[0..split_interval_in_parts.size]
     end
   end
-
 end
