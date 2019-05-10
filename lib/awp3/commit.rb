@@ -1,10 +1,9 @@
 module Awp3
   class Commit
-    MESSAGES_LIST = %w(fix change update)
+    MESSAGES_LIST = %w[fix change update].freeze
     attr_reader :files, :date, :message, :commit_message
 
-
-    def initialize(files, date, commit_message="")
+    def initialize(files, date, commit_message = '')
       @files = files
       @date = date
       @message = build_message
@@ -13,8 +12,8 @@ module Awp3
 
     def commit
       {
-          git_add: "git add #{files.join(' ')}",
-          git_commit: generate_commit_message
+        git_add: "git add #{files.join(' ')}",
+        git_commit: generate_commit_message
       }
     end
 
@@ -22,16 +21,14 @@ module Awp3
       message = MESSAGES_LIST.sample
 
       full_message_chance = rand(1..10)
-      if full_message_chance < 3
-        return message
-      end
+      return message if full_message_chance < 3
 
       add_file_name_to_message(message)
     end
 
     def add_file_name_to_message(message)
       number_of_names_from_file = rand(2..5)
-      file_name = files_names_for_commit.split(/_|-/).first(number_of_names_from_file).join(" ")
+      file_name = files_names_for_commit.split(/_|-/).first(number_of_names_from_file).join(' ')
       message + " #{file_name}"
     end
 
@@ -60,4 +57,3 @@ module Awp3
     end
   end
 end
-
