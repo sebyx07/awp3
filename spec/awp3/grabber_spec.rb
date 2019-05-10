@@ -4,7 +4,7 @@ RSpec.describe Awp3::Grabber do
   before(:all) do
     @start = '3.hours.ago'
     @end = 'Time.now'
-    @files = (1..100).map { |i| "file_#{i}"}
+    @files = (1..100).map { |i| "file_#{i}" }
   end
 
   describe '#split_interval_in_parts' do
@@ -14,6 +14,7 @@ RSpec.describe Awp3::Grabber do
       parts = @grabber.split_interval_in_parts
       parts.each_with_index do |part, i|
         next if i == 0
+
         expect(part > parts[i - 1]).to be_truthy
       end
 
@@ -26,6 +27,7 @@ RSpec.describe Awp3::Grabber do
       parts = @grabber.split_interval_in_parts
       parts.each_with_index do |part, i|
         next if i == 0
+
         expect(part > parts[i - 1]).to be_truthy
       end
 
@@ -41,7 +43,7 @@ RSpec.describe Awp3::Grabber do
       expect(grabs.size).to eq(100)
     end
 
-    it "count" do
+    it 'count' do
       (2..100).to_a.reverse.each do |count|
         @grabber = Awp3::Grabber.new(@start, @end, count)
         allow(@grabber).to receive(:grab_files).and_return(@files)
