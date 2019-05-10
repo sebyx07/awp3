@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Awp3::Commit do
   before(:all) do
     @date = Time.now.to_datetime
-    @commit_obj = Awp3::Commit.new(%w(/aa/aa.rb /aa/bb.rb), @date)
+    @commit_obj = Awp3::Commit.new(%w[/aa/aa.rb /aa/bb.rb], @date)
     @commit = @commit_obj.commit
   end
 
