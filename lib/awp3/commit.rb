@@ -42,13 +42,13 @@ module Awp3
     def add_new!
       p add = 'git add .'
       `#{add}`
-      p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m 'update'`
+      p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m 'update' --no-verify`
     end
 
     private
 
     def generate_commit_message
-      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}#{commit_message}'"
+      "GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}#{commit_message}' --no-verify"
     end
 
     def files_names_for_commit

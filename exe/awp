@@ -6,7 +6,7 @@ include Awp3::Command
 if ARGV[0] == 'now'
   message = Awp3::Commit::MESSAGES_LIST.sample
   exec_s 'git add .'
-  exec_s "git commit -m '#{message}'"
+  exec_s "git commit -m '#{message}' --no-verify"
   return exec_s 'git push origin HEAD'
 end
 
@@ -19,7 +19,7 @@ return p Awp3::Commit.new(['a'], eval(ARGV[1])).add_new! if ARGV[0] == 'add-new'
 if ARGV[0] == 'commit'
   date = eval(ARGV[1]).to_datetime
   message = ARGV[2]
-  return p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}'`
+  return p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}' --no-verify`
 end
 
 if ARGV[0] == 'rubocop'
