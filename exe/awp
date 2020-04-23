@@ -3,41 +3,50 @@
 require 'awp3'
 include Awp3::Command
 
-if ARGV[0] == 'now'
-  message = Awp3::Commit::MESSAGES_LIST.sample
-  exec_s 'git add .'
-  exec_s "git commit -m '#{message}' --no-verify"
-  return exec_s 'git push origin HEAD'
-end
+class MainRunner
+  class << self
+    def run
+      if ARGV[0] == 'now'
+        message = Awp3::Commit::MESSAGES_LIST.sample
+        exec_s 'git add .'
+        exec_s "git commit -m '#{message}' --no-verify"
+        return exec_s 'git push origin HEAD'
+      end
 
-if ARGV[0] == 'max'
-  return p Awp3::Grabber.new('Time.now', 'Time.now', 'max').grab_files.size
-end
+      if ARGV[0] == 'max'
+        return p Awp3::Grabber.new('Time.now', 'Time.now', 'max').grab_files.size
+      end
 
-return p Awp3::Commit.new(['a'], eval(ARGV[1])).add_new! if ARGV[0] == 'add-new'
+      return p Awp3::Commit.new(['a'], eval(ARGV[1])).add_new! if ARGV[0] == 'add-new'
 
-if ARGV[0] == 'commit'
-  date = eval(ARGV[1]).to_datetime
-  message = ARGV[2]
-  return p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}' --no-verify`
-end
+      if ARGV[0] == 'commit'
+        date = eval(ARGV[1]).to_datetime
+        message = ARGV[2]
+        return p `GIT_AUTHOR_DATE='#{date}' GIT_COMMITTER_DATE='#{date}' git commit -m '#{message}' --no-verify`
+      end
 
-if ARGV[0] == 'rubocop'
-  return exec_s("rubocop #{Awp3::Grabber.changed_files.join(' ')} --auto-correct", show_output: true)
-end
+      if ARGV[0] == 'rubocop'
+        return exec_s("rubocop #{Awp3::Grabber.changed_files.join(' ')} --auto-correct", show_output: true)
+      end
 
-grabs = Awp3::Grabber.new(ARGV[0], ARGV[1], ARGV[2]).grab
+      grabs = Awp3::Grabber.new(ARGV[0], ARGV[1], ARGV[2]).grab
 
-if ARGV[3] == 'test'
-  p grabs
-  print "\n\n----END GRABS---\n\n"
-  grabs.each do |grab|
-    p Awp3::Commit.new(grab[:files], grab[:time]).commit
+      if ARGV[3] == 'test'
+        p grabs
+        print "\n\n----END GRABS---\n\n"
+        grabs.each do |grab|
+          p Awp3::Commit.new(grab[:files], grab[:time]).commit
+        end
+
+        return p 'This was a test nothing was committed!'
+      end
+
+      grabs.each do |grab|
+        Awp3::Commit.new(grab[:files], grab[:time], ARGV[3]).commit!
+      end
+    end
   end
-
-  return p 'This was a test nothing was committed!'
 end
 
-grabs.each do |grab|
-  Awp3::Commit.new(grab[:files], grab[:time], ARGV[3]).commit!
-end
+
+MainRunner.run
